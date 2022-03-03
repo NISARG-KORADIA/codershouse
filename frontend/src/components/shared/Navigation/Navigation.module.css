@@ -1,3 +1,20 @@
 .navbar {
   padding: 20px 0;
 }
+
+.brandStyle {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+}
+
+.logoSizing {
+  height: 27px;
+}
+
+.logoText {
+  margin-left: 13px;
+}

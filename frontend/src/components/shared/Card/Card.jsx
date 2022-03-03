@@ -1,6 +1,7 @@
 import React from "react";
-// import { Link } from "react-router-dom";
 import styles from "./Card.module.css";
+
+// Card component, which will have heading with icon. and then you can pass childern to it.
 
 const Card = ({ title, icon, children }) => {
   return (
