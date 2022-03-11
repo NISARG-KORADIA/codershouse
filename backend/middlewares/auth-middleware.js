@@ -1,7 +1,7 @@
 const tokenService = require("../services/token-service");
 
 module.exports = async function (req, res, next) {
-  console.log(`Request of activate in the middleware:\n${req}`);
+  // console.log(`Request of activate in the middleware:\n${req.body}`);
 
   try {
 

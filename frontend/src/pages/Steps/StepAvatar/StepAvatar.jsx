@@ -6,6 +6,8 @@ import styles from "./StepAvatar.module.css";
 import { setAvatar } from "../../../store/activateSlice";
 import { activate } from "../../../http/index";
 import { setAuth } from "../../../store/authSlice";
+import Loader from "../../../components/shared/Loader/Loader";
+import { useEffect } from "react";
 
 // This is one of the completed page of auth-flow.
 // We are doing many complex task here like uploading image, setting it to global state (c) and then seding all of this information to the server which we
@@ -13,6 +15,8 @@ import { setAuth } from "../../../store/authSlice";
 const StepAvatar = ({ onNext }) => {
   const { name, avatar } = useSelector((state) => state.activate);
   const [image, setImage] = useState("/images/monkeyAvatar.png");
+  const [loading, setLoading] = useState(false);
+  const [unmounted, setUnmounted] = useState(false);
   const dispatch = useDispatch();
 
   function captureImage(e) {
@@ -30,18 +34,32 @@ const StepAvatar = ({ onNext }) => {
   }
 
   async function submit() {
+    if (!avatar || !name) return;
+
+    setLoading(true);
     // Here we will send the post request with name and avatar and wait for server to return the response containing user data.
     // From the data we will set the user to global state's user. See the auth function.
     try {
       const { data } = await activate({ name, avatar });
-      if (data.auth) {
+
+      if (data.auth && !unmounted) {
         dispatch(setAuth(data));
       }
-      console.log(data);
+      // console.log(data);
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   }
+
+  useEffect(() => {
+    return () => {
+      setUnmounted(false);
+    };
+  }, []);
+
+  if (loading) return <Loader message="Activating..." />;
 
   return (
     <>

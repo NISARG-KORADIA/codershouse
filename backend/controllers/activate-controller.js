@@ -5,27 +5,22 @@ const UserDto = require('../dtos/user-dto');
 
 class ActivateController {
   async activate(req, res) {
-    console.log(`Request of activate after middleware:\n${req}`);
+    // console.log(`Request of activate after middleware:\n${req}`);
     // Check if user has entered the data.
     const { name, avatar } = req.body;
     if (!name || !avatar) {
       return res.status(400).json({ message: 'All fields are required!' });
     }
 
-
     // Buffer class is used to convert base64 string to image file.
     const buffer = Buffer.from(
       avatar.replace(/^data:image\/(png|jpg|jpeg);base64,/, ''),
       'base64'
     );
-
-
-    // Giving name to image based on time.
     const imagePath = `${Date.now()}-${Math.round(
       Math.random() * 1e9
     )}.png`;
     // e.g., 32478362874-3242342342343432.png
-
 
     // Compressing image using jimp
     try {
@@ -34,9 +29,9 @@ class ActivateController {
         .resize(150, Jimp.AUTO)
         .write(path.resolve(__dirname, `../storage/${imagePath}`));
     } catch (err) {
+      // console.log(err);
       return res.status(500).json({ message: 'Could not process the image' });
     }
-
 
     // Updating user data: name, activation status and avatar.
     const userId = req.user._id;

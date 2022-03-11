@@ -5,12 +5,21 @@ const userScema = new Schema(
   {
     phone: { type: String, required: true },
     name: { type: String, required: false },
-    avatar: { type: String, required: false },
+    avatar: {
+      type: String,
+      required: false,
+      get: (avatar) => {
+        if (avatar) {
+          return `${process.env.BASE_URL}${avatar}`;
+        }
+      }
+    },
     activated: { type: Boolean, required: false, default: false }
   },
   {
     timestamps: true,
+    toJSON: { getters: true },
   }
 );
 
-module.exports = mongoose.model('User', userScema, 'users'); ``
+module.exports = mongoose.model('User', userScema, 'users'); 

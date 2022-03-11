@@ -18,10 +18,12 @@ const StepOtp = ({ onNext }) => {
   const { phone, hash } = useSelector((state) => state.auth.otp);
 
   async function submit() {
+    if(!otp || !phone || !hash) return;
     // Here we are making post request and sending the hash we recieved earlier, otp and hash for verification and server will send the user data in response. Which we will set in global state as well as we will set the isAuth to true.
     try {
-      const { data } = await verifyOtp({ otp, phone, hash });
-      console.log(data);
+      const {data} = await verifyOtp({ otp, phone, hash });
+      
+      // console.log(data);
       dispatch(setAuth(data));
     } catch (err) {
       console.log(err);
